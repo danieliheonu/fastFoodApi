@@ -15,7 +15,7 @@ class AuthController extends Controller
         $validation = [
             "name" => "required",
             "email" => "required|email",
-            "password" => "required|confirmed|min:6"
+            "password" => "required|confirmed|min:6" // this is the field for comparing pasword "password_confirmation"
         ];
 
         $validator = Validator::make($request->all(), $validation);
@@ -28,7 +28,16 @@ class AuthController extends Controller
             ]);
         }
 
-        $user = User::create($request->input());
+        // $user = User::create($request->input()); //here is the issue 
+        //lets leave the code like this so that we can be able to hash the password 
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'address' => $request->address,
+            'password'=> bcrypt($request->password)
+        
+        ]);
         return response()->json([
             "status" => 201,
             "data" => $user,
@@ -42,7 +51,7 @@ class AuthController extends Controller
             "email" => "required|email",
             "password" => "required",
         ]);
-
+            
         if (Auth::attempt($data)){
             return response()->json([
                 "status" => 200,
