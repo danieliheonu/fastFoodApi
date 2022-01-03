@@ -7,11 +7,7 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function listUsers()
     {
         $users = User::all();
@@ -22,12 +18,6 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function userDetail($id)
     {
         $user = User::find($id);
@@ -45,13 +35,6 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function updateUserDetail(Request $request, $id)
     {
         $user = User::find($id);
@@ -62,7 +45,7 @@ class UserController extends Controller
                 "message" => "user not found"
             ]);
         }
-        $user->update([$request->input()]);
+        $user->update($request->all());
         return response()->json([
             "status" => 200,
             "data" => $user,
@@ -70,12 +53,6 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function deleteUserDetail($id)
     {
         $user = User::find($id);
@@ -91,6 +68,24 @@ class UserController extends Controller
             "status" => 200,
             "data" => [],
             "message" => "user successfully deleted"
+        ]);
+    }
+
+    public function userRestaurantList($id){
+        $user_restaurants = User::find($id)->restaurants;
+
+        if ($user_restaurants){
+            return response()->json([
+                "status" => 200,
+                "message" => "successfully retrieved",
+                "data" => $user_restaurants
+            ]);
+        }
+
+        return response()->json([
+            "status" =>  404,
+            "message" => "data not found",
+            "data" => []
         ]);
     }
 }
