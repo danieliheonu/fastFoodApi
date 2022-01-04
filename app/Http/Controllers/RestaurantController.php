@@ -22,15 +22,24 @@ class RestaurantController extends Controller
 
     public function createRestaurant(Request $request){
         $request->validate([
-            "icon" => "required|mime:png,jpg"
+            "icon" => "mime:png,jpg"
         ]);
 
-        Restaurant::create([
-            "owner_id" => $request->user()->id,
-            "name" => $request->name,
-            "address" => $request->address,
-            "icon" => $request->file('icon')->store('public/images')
-        ]);
+        if($request->icon != NULL)
+        {
+            Restaurant::create([
+                "owner_id" => $request->user()->id,
+                "name" => $request->name,
+                "address" => $request->address,
+                "icon" => $request->file('icon')->store('public/images')
+            ]);
+        }else{
+            Restaurant::create([
+                "owner_id" => $request->user()->id,
+                "name" => $request->name,
+                "address" => $request->address,
+            ]);
+        }
 
         return response()->json([
             "status" => 201,

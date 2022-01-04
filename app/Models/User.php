@@ -45,6 +45,16 @@ class User extends Authenticatable
     ];
 
     public function restaurants(){
-        return $this->hasMany(Restaurant::class);
+        return $this->hasMany(Restaurant::class, 'owner_id');
+    }
+
+    public function favouriteRestaurant()
+    {
+        return $this->belongsToMany(Restaurant::class, 'favourite');
+    }
+
+    public function rateRestaurant()
+    {
+        return $this->belongsToMany(Restaurant::class, 'rating')->withPivot('rating');
     }
 }

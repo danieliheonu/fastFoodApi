@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Restaurant;
 
 class UserController extends Controller
 {
@@ -86,6 +87,17 @@ class UserController extends Controller
             "status" =>  404,
             "message" => "data not found",
             "data" => []
+        ]);
+    }
+
+    public function userFavouriteRestaurant(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        return response()->json([
+            "status" => 200,
+            "message" => "successfully retrieved",
+            "data" => $user->favouriteRestaurant
         ]);
     }
 }

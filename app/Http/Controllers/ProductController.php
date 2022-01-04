@@ -3,23 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Model\Restaurant;
-use App\Model\Category;
+use App\Models\Category;
+use App\Models\Restaurant;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
     public function createProduct(Request $request, $id){
         $restaurant = Restaurant::find($id);
-
-        $category = Category::where(['name' => $request->category])->first();
         
         if($restaurant){
             Product::create([
                 "name" => $request->name,
                 "price" => $request->price,
-                "category_id" => $category->id,
-                "restaurant_id" => $restaurant_id,
+                "category_id" => $request->category_id,
             ]);
+
+            $new_product = Product::where(['name'=>$request->name])->first();
+
+            $restaurant->product()->attach($new_product->id);
 
             return response()->json([
                 "status" => 201,
@@ -27,8 +29,7 @@ class ProductController extends Controller
                 "data" => [
                     "name" => $request->name,
                     "price" => $request->price,
-                    "category_id" => $category->id,
-                    "restaurant_id" => $restaurant_id,
+                    "category_id" => $request->category_id,
                 ]
             ]);
         }
@@ -41,23 +42,30 @@ class ProductController extends Controller
 
     public function listRestaurantProducts($id){
         $restaurant = Restaurant::find($id);
-        $products = Product::where(['restaurant_id'=>$restaurant->id])->get();
 
         return response()->json([
             "status" => 200,
             "message" => "successfully retrieved",
-            "data" => $products
+            "data" => $restaurant->product
         ]);
     }
 
     public function listRestaurantProductCategories($id){
         $restaurant = Restaurant::find($id);
         $categories = [];
-        $products = Product::where(['restaurant_id'=>$restaurant->id])->get();
+        $products = [];
+
+        foreach($restaurant->product as $product)
+        {
+            array_push($products, Product::where(['id'=>$product->pivot->product_id])->first());
+        }
 
         foreach ($products as $product) {
             $product_category = $product->category->name;
-            array_push($categories, $product_category);
+            if(!in_array($product_category, $categories))
+            {
+                array_push($categories, $product_category);
+            }
         }
 
         return response()->json([
@@ -100,12 +108,7 @@ class ProductController extends Controller
             return response()->json([
                 "status" => 200,
                 "message" => "product updated successfully",
-                "data" => [
-                    "name" => $request->name,
-                    "price" => $request->price,
-                    "category_id" => $category->id,
-                    "restaurant_id" => $restaurant_id,
-                ],
+                "data" => $product,
             ]);
         }
 
@@ -125,6 +128,17 @@ class ProductController extends Controller
            "status" => 202,
             "message" => "successfully deleted",
             "data" => [], 
+        ]);
+    }
+
+    public function listProductByCategory($id)
+    {
+        $category = Category::find($id);
+
+        return response()->json([
+            "status" => 200,
+            "message" => "successfully retrieved",
+            "data" => $category->products
         ]);
     }
 }

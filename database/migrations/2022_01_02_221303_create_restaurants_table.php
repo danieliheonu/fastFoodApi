@@ -15,13 +15,11 @@ class CreateRestaurantsTable extends Migration
     {
         Schema::create('restaurants', function (Blueprint $table) {
             $table->id();
-            $table->integer('owner_id');
+            $table->integer('owner_id')->nullable();
             $table->string('name', 100);
             $table->string('address')->nullable();
-            $table->integer('ratings')->default(0);
-            $table->string('icon');
-            $table->boolean('favourite')->default(false);
-            $table->foreignId('owner_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('icon')->nullable();
+            // $table->foreignId('owner_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

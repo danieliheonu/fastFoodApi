@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Restaurant;
-use App\Models\Rating;
+use App\Models\User;
 
 class RatingController extends Controller
 {
     public function ratings($id){
-        $ratings = Rating::where(['restaurant_id' => $id])->get();
+        $ratings = Restaurant::find($id)->userRating->rating;;
         $sum = 0;
         foreach ($ratings as $key) {
             $sum += $key->rating;
@@ -22,47 +22,37 @@ class RatingController extends Controller
 
         if($restaurant){
 
-            $rated = Rating::where(['restaurant_id' => $restaurant->id, 'user_id' => $request->user()->id])->first();
+            $rated = $restaurant->userRating()->where(['user_id'=>$request->user()->id]);
 
-            if($rated){
-                $rated->update([
-                    "rating" => $request->rating
-                ]);
+            if($rated != NULL){
+                $user = User::find($request->user()->id);
+                $user->rateRestaurant()->sync($id, ['rating'=>$request->rating]);
             }else{
-                Rating::create([
-                    "user_id" => $request->user()->id,
-                    "restaurant_id" => $restaurant->id,
-                    "rating" => $request->rating
-                ]);
+                $user = User::find($request->user()->id);
+                $user->rateRestaurant()->attach($id, ['rating'=>$request->rating]);
             }
-
-            $restaurant->update([
-                "ratings" => ratings($restaurant->id)
-            ]);
 
             return response()->json([
                 "status" => 200,
                 "message" => "successfully rated",
-                "data" => $restaurant
             ]);
         }
 
         return response()->json([
             "status" => 404,
             "message" => "restaurant could not be rated",
-            "data" => []
         ]);
     }
 
     public function listRatings($id){
         $restaurant = Restaurant::find($id);
 
-        $rating = Rating::where(['restaurant_id' => $restaurant->id])->get();
+        $ratings = $restaurant->userRating;
 
         return response()->json([
             "status" => 200,
             "message" => "successfully retrieved",
-            "data" => $rating
+            "data" => $ratings
         ]);
        
     }

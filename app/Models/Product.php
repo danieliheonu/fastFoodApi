@@ -14,10 +14,14 @@ class Product extends Model
         "name",
         "price",
         "category_id",
-        "restaurant_id",
     ];
 
     public function category(){
         return $this->belongsTo(Category::class);
+    }
+
+    public function restaurant()
+    {
+        return $this->belongsToMany(Restaurant::class);
     }
 }
