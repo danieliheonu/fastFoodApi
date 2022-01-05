@@ -53,18 +53,13 @@ class ProductController extends Controller
     public function listRestaurantProductCategories($id){
         $restaurant = Restaurant::find($id);
         $categories = [];
-        $products = [];
 
-        foreach($restaurant->product as $product)
+        foreach($restaurant->product as $key)
         {
-            array_push($products, Product::where(['id'=>$product->pivot->product_id])->first());
-        }
-
-        foreach ($products as $product) {
-            $product_category = $product->category->name;
-            if(!in_array($product_category, $categories))
+            $product_category = Category::find($key->category_id);
+            if(!in_array($product_category->name, $categories))
             {
-                array_push($categories, $product_category);
+                array_push($categories, ["id"=>$product_category->id,"name"=>$product_category->name]);
             }
         }
 
@@ -96,14 +91,8 @@ class ProductController extends Controller
     public function updateProduct(Request $request, $id){
         $product = Product::find($id);
 
-        $category = Category::where(['name' => $request->category])->first();
-
         if($product){
-            $product->update([
-                "name" => $request->name,
-                "price" => $request->price,
-                "category_id" => $category->id,
-            ]);
+            $product->update($request->all());
 
             return response()->json([
                 "status" => 200,

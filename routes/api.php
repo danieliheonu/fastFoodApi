@@ -60,6 +60,6 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::put('/product/{id}', [ProductController::class, 'updateProduct']);
     Route::delete('/product/{id}', [ProductController::class, 'deleteProduct']);
 
-    Route::post('restaurant/{id}/favourite', [FavouriteController::class, 'addFavourite']);
-    Route::delete('restaurant/{id}/favourite', [FavouriteController::class, 'removeFavourite']);
+    Route::post('/restaurant/{id}/favourite', [FavouriteController::class, 'addFavourite']);
+    Route::delete('/restaurant/{id}/favourite', [FavouriteController::class, 'removeFavourite']);
 });

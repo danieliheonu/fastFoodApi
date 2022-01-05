@@ -9,7 +9,7 @@ class CategoryController extends Controller
 {
     public function createCategory(Request $request){
         $request->validate([
-            "name" => "required|alpha"
+            "name" => "required|unique:App\Models\Category"
         ]);
 
         Category::create($request->all());
@@ -48,7 +48,7 @@ class CategoryController extends Controller
 
     public function updateCategory(Request $request, $id){
         $request->validate([
-            "name" => "required|alpha"
+            "name" => "required|unique:App\Models\Category"
         ]);
 
         $category = Category::find($id);

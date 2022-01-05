@@ -79,12 +79,20 @@ class RestaurantController extends Controller
         ]);
 
         if ($restaurant){
-            $restaurant->update([
-                "owner_id" => $request->user()->id,
-                "name" => $request->name,
-                "address" => $request->address,
-                "icon" => $request->file('icon')->store('public/images')
-            ]);
+            if($request->icon != null){
+                $restaurant->update([
+                    "owner_id" => $request->user()->id,
+                    "name" => $request->name,
+                    "address" => $request->address,
+                    "icon" => $request->file('icon')->store('public/images')
+                ]);
+            }else{
+                $restaurant->update([
+                    "owner_id" => $request->user()->id,
+                    "name" => $request->name,
+                    "address" => $request->address,
+                ]);
+            }
 
             return response()->json([
                 "status" => 200,
