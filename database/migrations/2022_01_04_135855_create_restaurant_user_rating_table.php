@@ -17,7 +17,7 @@ class CreateRestaurantUserRatingTable extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('restaurant_id');
-            // $table->integer('rating');
+            $table->integer('rating');
             // $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             // $table->foreignId('restaurant_id')->constrained('restaurants')->onDelete('cascade');
         });

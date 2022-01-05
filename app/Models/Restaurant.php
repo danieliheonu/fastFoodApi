@@ -14,7 +14,7 @@ class Restaurant extends Model
         'name',
         'address',
         'icon',
-        'owner_id'
+        'owner_id',
     ];
 
     public function user()

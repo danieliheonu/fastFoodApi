@@ -9,10 +9,10 @@ use App\Models\User;
 class RatingController extends Controller
 {
     public function ratings($id){
-        $ratings = Restaurant::find($id)->userRating->rating;;
+        $ratings = Restaurant::find($id)->userRating;
         $sum = 0;
         foreach ($ratings as $key) {
-            $sum += $key->rating;
+            $sum += $key->pivot->rating;
             return $sum/($ratings->count());
         }
     }
@@ -21,38 +21,36 @@ class RatingController extends Controller
         $restaurant = Restaurant::find($id);
 
         if($restaurant){
-
-            $rated = $restaurant->userRating()->where(['user_id'=>$request->user()->id]);
-
-            if($rated != NULL){
+            $already_rated = $restaurant->userRating()->where(["user_id"=>$request->user()->id]);
+            if(!$already_rated){
                 $user = User::find($request->user()->id);
-                $user->rateRestaurant()->sync($id, ['rating'=>$request->rating]);
+                $user->rateRestaurant()->attach($id, ['rating'=>$request->rating]);
             }else{
                 $user = User::find($request->user()->id);
+                $user->rateRestaurant()->detach($id);
                 $user->rateRestaurant()->attach($id, ['rating'=>$request->rating]);
             }
 
             return response()->json([
                 "status" => 200,
-                "message" => "successfully rated",
+                "message" => "rated successfully",
             ]);
         }
 
         return response()->json([
             "status" => 404,
-            "message" => "restaurant could not be rated",
+            "message" => "restaurant does not exist",
         ]);
     }
 
     public function listRatings($id){
         $restaurant = Restaurant::find($id);
 
-        $ratings = $restaurant->userRating;
-
         return response()->json([
             "status" => 200,
             "message" => "successfully retrieved",
-            "data" => $ratings
+            "data" => $restaurant->userRating,
+            "total" => $this->ratings($id),
         ]);
        
     }
