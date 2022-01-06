@@ -113,7 +113,7 @@ class UserController extends Controller
      *      in="query",
      *      required=false,
      *      @OA\Schema(
-     *           type="email"
+     *           type="string"
      *      )
      *   ),
      *   @OA\Parameter(
@@ -129,7 +129,7 @@ class UserController extends Controller
      *      in="query",
      *      required=false,
      *      @OA\Schema(
-     *          type="password"
+     *          type="string"
      *      )
      *   ),
      * 

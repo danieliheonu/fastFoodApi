@@ -29,7 +29,7 @@ class AuthController extends Controller
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *           type="email"
+     *           type="string"
      *      )
      *   ),
      *   @OA\Parameter(
@@ -45,7 +45,7 @@ class AuthController extends Controller
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *          type="password"
+     *          type="string"
      *      )
      *   ),
      *   @OA\Parameter(
@@ -53,7 +53,7 @@ class AuthController extends Controller
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *          type="password"
+     *          type="string"
      *      )
      *   ),
      *   @OA\Response(
@@ -124,7 +124,7 @@ class AuthController extends Controller
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *           type="password"
+     *           type="string"
      *      )
      *   ),
      *   @OA\Response(

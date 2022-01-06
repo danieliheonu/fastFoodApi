@@ -39,7 +39,7 @@
                         "in": "query",
                         "required": true,
                         "schema": {
-                            "type": "email"
+                            "type": "string"
                         }
                     },
                     {
@@ -55,7 +55,7 @@
                         "in": "query",
                         "required": true,
                         "schema": {
-                            "type": "password"
+                            "type": "string"
                         }
                     },
                     {
@@ -63,7 +63,7 @@
                         "in": "query",
                         "required": true,
                         "schema": {
-                            "type": "password"
+                            "type": "string"
                         }
                     }
                 ],
@@ -101,7 +101,7 @@
                         "in": "query",
                         "required": true,
                         "schema": {
-                            "type": "password"
+                            "type": "string"
                         }
                     }
                 ],
@@ -911,7 +911,7 @@
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "type": "email"
+                            "type": "string"
                         }
                     },
                     {
@@ -927,7 +927,7 @@
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "type": "password"
+                            "type": "string"
                         }
                     }
                 ],
@@ -1061,7 +1061,7 @@
     },
     "components": {
         "securitySchemes": {
-            "bearer_token": {
+            "sanctum": {
                 "type": "apiKey",
                 "description": "Enter token in format (Bearer <token>)",
                 "name": "Authorization",
