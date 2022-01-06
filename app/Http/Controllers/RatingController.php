@@ -17,6 +17,47 @@ class RatingController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     **  path="/restaurant/{id}/rating",
+     *   tags={"Restaurant"},
+     *   security={{"bearer_token":{}}},
+     *   summary="Rate A Restaurant",
+     *   operationId="rateRestaurant",
+     * 
+     *  @OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="integer"
+     *      )
+     *   ),
+     *  @OA\Parameter(
+     *      name="rating",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="integer"
+     *      )
+     *  ),
+     * 
+     *   @OA\Response(
+     *      response=200,
+     *       description="rated successfully",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *       description="restaurant does not exist",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   )
+     *  )
+     */
     public function rateRestaurant(Request $request, $id){
         $restaurant = Restaurant::find($id);
 

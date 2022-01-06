@@ -9,7 +9,66 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-
+    /**
+     * @OA\Post(
+     ** path="/auth/register",
+     *   tags={"Auth"},
+     *   summary="Register A User",
+     *   operationId="register",
+     *   
+     *  @OA\Parameter(
+     *      name="name",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="email",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="email"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="address",
+     *      in="query",
+     *      required=false,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="password",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="password"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="password_confirmation",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="password"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=201,
+     *       description="User Successfully Created",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *       description="Bad Request"
+     *   )
+     *)
+     **/
     public function register(Request $request)
     {
         $validation = [
@@ -45,6 +104,42 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Post(
+     ** path="/auth/login",
+     *   tags={"Auth"},
+     *   summary="Login A User",
+     *   operationId="login",
+     *   
+     *  @OA\Parameter(
+     *      name="email",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="password",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="password"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=200,
+     *       description="Successfully Logged In",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *       description="Incorrect. Check your email or password"
+     *   )
+     *)
+     **/
     public function login(Request $request)
     {
         $data = $request->validate([
@@ -68,6 +163,23 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Post(
+     ** path="/auth/logout",
+     *   tags={"Auth"},
+     *   security={{"bearer_token":{}}},
+     *   summary="Logout A User",
+     *   operationId="logout",
+     * 
+     *   @OA\Response(
+     *      response=200,
+     *       description="user successfully logged out",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   )
+     *)
+     **/
     public function logout(){
         auth()->user()->tokens()->delete();
 

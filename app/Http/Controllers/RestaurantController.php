@@ -20,9 +20,52 @@ class RestaurantController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Post(
+     **  path="/restaurant",
+     *   tags={"Restaurant"},
+     *   security={{"bearer_token":{}}},
+     *   summary="Create A Restaurant",
+     *   operationId="listRestaurants",
+     * 
+     *  @OA\Parameter(
+     *      name="name",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *  ),
+     *  @OA\Parameter(
+     *      name="address",
+     *      in="query",
+     *      required=false,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *  ),
+     *  @OA\Parameter(
+     *      name="icon",
+     *      in="query",
+     *      required=false,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     * 
+     *   @OA\Response(
+     *      response=200,
+     *       description="successfully created",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   )
+     *  )
+     */
     public function createRestaurant(Request $request){
         $request->validate([
-            "icon" => "mime:png,jpg"
+            "icon" => "mime:png,jpg",
+            "name" => "required"
         ]);
 
         if($request->icon != NULL)
@@ -53,6 +96,39 @@ class RestaurantController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Get(
+     **  path="/restaurant/{id}",
+     *   tags={"Restaurant"},
+     *   security={{"bearer_token":{}}},
+     *   summary="Get A Restaurant Detail",
+     *   operationId="restaurantDetail",
+     * 
+     *  @OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="integer"
+     *      )
+     *   ),
+     * 
+     *   @OA\Response(
+     *      response=200,
+     *       description="successfully retrieved",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *       description="retrieved unsuccessfully",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   )
+     *  )
+     */
     public function restaurantDetail($id){
         $restaurant = Restaurant::find($id);
 
@@ -71,6 +147,62 @@ class RestaurantController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Put(
+     **  path="/restaurant/{id}",
+     *   tags={"Restaurant"},
+     *   security={{"bearer_token":{}}},
+     *   summary="Update A Restaurant Detail",
+     *   operationId="updateRestaurant",
+     * 
+     *  @OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="integer"
+     *      )
+     *   ),
+     *  @OA\Parameter(
+     *      name="name",
+     *      in="query",
+     *      required=false,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *  ),
+     *  @OA\Parameter(
+     *      name="address",
+     *      in="query",
+     *      required=false,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *  ),
+     *  @OA\Parameter(
+     *      name="icon",
+     *      in="query",
+     *      required=false,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ), 
+     *   @OA\Response(
+     *      response=200,
+     *       description="successfully updated",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *       description="could not be updated",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   )
+     *  )
+     */
     public function updateRestaurant(Request $request, $id){
         $restaurant = Restaurant::find($id);
 
@@ -109,6 +241,39 @@ class RestaurantController extends Controller
 
     }
 
+    /**
+     * @OA\Delete(
+     **  path="/restaurant/{id}",
+     *   tags={"Restaurant"},
+     *   security={{"bearer_token":{}}},
+     *   summary="Delete A Restaurant",
+     *   operationId="deleteRestaurant",
+     * 
+     *  @OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="integer"
+     *      )
+     *   ),
+     * 
+     *   @OA\Response(
+     *      response=200,
+     *       description="successfully deleted",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *       description="could not be deleted",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   )
+     *  )
+     */
     public function deleteRestaurant($id){
         $restaurant = Restaurant::find($id);
 

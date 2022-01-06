@@ -34,7 +34,7 @@ Route::get("/category/{id}", [CategoryController::class, "viewCategory"]);
 Route::put("/category/{id}", [CategoryController::class, "updateCategory"]);
 Route::delete("/category/{id}", [CategoryController::class, "deleteCategory"]);
 
-Route::get('/restaurant/{id}/categories', [ProductController::class, 'listRestaurantProductCategories']);
+Route::get('/restaurant/{id}/categories', [ProductController::class, 'listRestaurantCategories']);
 Route::get('/restaurant/{id}/products', [ProductController::class, 'listRestaurantProducts']);
 
 Route::group(['middleware' => ['auth:sanctum']], function(){
