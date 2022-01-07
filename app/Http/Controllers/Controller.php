@@ -33,7 +33,7 @@ class Controller extends BaseController
      *  )
      * 
      *  @OAS\SecurityScheme(
-     *      securityScheme="sanctum",
+     *      securityScheme="bearer_token",
      *      type="http",
      *      scheme="bearer"
     */
