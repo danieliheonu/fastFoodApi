@@ -168,7 +168,9 @@ class ProductController extends Controller
         return response()->json([
             "status" => 200,
             "message" => "successfully retrieved",
-            "data" => $categories
+            "data" => collect($categories)->unique()
+            //try this below to see how it works without unique()
+           //  "data" => $categories 
         ]);
     }
 
