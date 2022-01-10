@@ -60,6 +60,10 @@ class ProductController extends Controller
     public function createProduct(Request $request, $id){
         $restaurant = Restaurant::find($id);
         
+        $request->validate([
+            "category_id" => "required"
+        ]);
+        
         if($restaurant){
             Product::create([
                 "name" => $request->name,
@@ -74,11 +78,7 @@ class ProductController extends Controller
             return response()->json([
                 "status" => 201,
                 "message" => "product created successfully",
-                "data" => [
-                    "name" => $request->name,
-                    "price" => $request->price,
-                    "category_id" => $request->category_id,
-                ]
+                "data" => $new_product
             ]);
         }
         return resposne()->json([
@@ -148,29 +148,20 @@ class ProductController extends Controller
      */
     public function listRestaurantCategories($id){
         $restaurant = Restaurant::find($id);
-        $categories = Category::all()->toArray();
-
-//find the restaurrant
-//find the products of the restaurant
-//find the categories of those products
-
+        $categories = [];
 
         foreach($restaurant->product as $key)
         {
-            // dd($key->category_id);
-            $product_category = Category::find($key->category_id);
-            if(!in_array($product_category->name, $categories))
-            {
-                array_push($categories, ["id"=>$product_category->id,"name"=>$product_category->name]);
+            $product_category = Category::find($key->category_id)->get();
+            foreach ($product_category as $product){
+                array_push($categories, $product->name);
             }
         }
 
         return response()->json([
             "status" => 200,
             "message" => "successfully retrieved",
-            "data" => collect($categories)->unique()
-            //try this below to see how it works without unique()
-           //  "data" => $categories 
+            "data" => array_unique($categories)
         ]);
     }
 
