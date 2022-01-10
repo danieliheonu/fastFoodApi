@@ -148,10 +148,16 @@ class ProductController extends Controller
      */
     public function listRestaurantCategories($id){
         $restaurant = Restaurant::find($id);
-        $categories = [];
+        $categories = Category::all()->toArray();
+
+//find the restaurrant
+//find the products of the restaurant
+//find the categories of those products
+
 
         foreach($restaurant->product as $key)
         {
+            // dd($key->category_id);
             $product_category = Category::find($key->category_id);
             if(!in_array($product_category->name, $categories))
             {
@@ -162,7 +168,9 @@ class ProductController extends Controller
         return response()->json([
             "status" => 200,
             "message" => "successfully retrieved",
-            "data" => $categories
+            "data" => collect($categories)->unique()
+            //try this below to see how it works without unique()
+           //  "data" => $categories 
         ]);
     }
 
