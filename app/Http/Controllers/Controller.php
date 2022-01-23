@@ -28,6 +28,10 @@ class Controller extends BaseController
      */
 
     /**
+     *  @OA\Server(
+     *      url=L5_SWAGGER_CONST_HOST,
+     *  )
+     *
      *  @OAS\SecurityScheme(
      *      securityScheme="bearer_token",
      *      type="http",
